@@ -18,6 +18,9 @@ use vars qw/$VERSION $PORT/;
 
 $VERSION="0.01";
 
+# Number of Net::RTP objects created
+$OBJCOUNT=0;
+
 
 XSLoader::load('Net::RTP', $VERSION);
 
@@ -27,6 +30,13 @@ sub new {
     my $class = shift;
     my ($mode) = @_;
     
+    # Initialise the ortp library?
+    if ($OBJCOUNT==0) {
+    	# ortp_init()
+	# ortp_scheduler_init()
+    }
+    $OBJCOUNT++;
+
     
 	# Work out the multicast group to use
     croak "Missing mode parameter" unless defined $mode;
@@ -52,6 +62,14 @@ sub DESTROY {
     if (exists $self->{'session'}) {
     	
     	#rtp_session_reset 
+    }
+
+    # Decrement the number of Net::RTP objects
+    $OBJCOUNT--;
+    if ($OBJCOUNT==0) {
+    	#ortp_exit();
+    } elsif ($OBJCOUNT<0) {
+    	warn "Warning: Net::RTP object count is less than 0.";
     }
 }
 

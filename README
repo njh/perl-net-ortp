@@ -23,6 +23,43 @@ INSTALLATION
 
 		libmodule-build-perl
 
+API Overview
+
+	Net::RTP
+	 - new( mode? )
+	 - scheduling_mode( [yesno] )
+	 - blocking_mode( [yesno] )
+	 ? profile( [profile] )
+	 - local_addr( [addr], [port] )
+	 - remote_addr( [addr], [port] )
+	 ? interface( [ifname] )
+	 - jitter_compensation( [milisec] )
+	 - ssrc( [ssrc] )
+	 - seq_number( [seq] )
+	 - payload_type( [type] )
+	 ? signal_connect( signal, callback, userdata )
+	 ? signal_disconnect( signal, callback )
+	 - send_with_ts( data, userts )
+	 - recv_with_ts( tswanted )
+	 - get_current_send_ts()
+	 - reset()
+
+	Net::RTP::Packet
+	 - new( ? )
+	 - payload( [data] )
+	 - markbit( [value] )
+	 - seqnumber( [seq] )
+	 - timestamp( [ts] )
+	 - ssrc( [ssrc] )
+	 - payload_type( [pt] )
+	
+	Net::RTP::Profile
+	 ? 
+
+	Net::RTP::SessionSet
+	 ? 
+	
+
 
 DEPENDENCIES
 

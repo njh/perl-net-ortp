@@ -2,11 +2,8 @@ Net-RTP version 0.01
 ====================
 
 
-Net::RTP blah blah
-
-
-
 INSTALLATION
+------------
 
 	I now use Module::Build to build and install the module.
 	To install this module type the following:
@@ -62,19 +59,115 @@ API Overview
 
 
 DEPENDENCIES
+------------
 
-	This module requires ortp library on your system.
+	This module requires oRTP library on your system.
 	http://www.linphone.org/ortp/
 	
+	It requires version 0.8.1 or newer.
+
+
+API OVERVIEW
+------------
+
+	Net::RTP
+		- new( mode )  (mode={RECVONLY,SENDONLY,SENDRECV})
+		- set_scheduling_mode( yesno )
+		- set_blocking_mode( yesno )
+		? set_profile( profile )
+		? get_profile( )
+		- set_local_addr( addr, port )
+		- get_local_port()
+		- set_remote_addr( addr, port )
+		- get_jitter_compensation( )
+		- set_jitter_compensation( milisec )
+		- set_adaptive_jitter_compensation( yesno )
+		- get_adaptive_jitter_compensation()
+		- set_local_ssrc( ssrc )
+		- get_local_ssrc( )
+		- set_local_seq_number( seq )
+		- get_local_seq_number( )
+		- set_local_payload_type( pt )
+		- get_local_payload_type( )
+		- set_remote_payload_type( pt )
+		- get_remote_payload_type( )
+		- get_local_ts( )
+		- get_remote_ts( )
+		
+		- recv_with_ts( ts )
+		- send_with_ts( data, ts )
+		? create_packet( payload )
+		? recv_packet_with_ts( ts )
+		? send_packet_with_ts( packet, ts )
+
+		- flush_sockets()
+		- reset()
+		? release_sockets()
+		? set_source_description( cname, name, email, phone, loc, tool, note )
+		? send_bye()
+
+
+	Net::RTP::Packet
+		- set_payload( data )
+		- get_payload()
+		- set_markbit( value )
+		- get_markbit()
+		- set_seqnumber( seq )
+		- get_seqnumber()
+		- set_timestamp( ts )
+		- get_timestamp()
+		- set_ssrc( ssrc )
+		- get_ssrc()
+		- set_payload_type( pt )
+		- get_payload_type()
+
+
+	Net::RTP::TelephoneEvent
+		? get_event
+		? set_event
+		? get_volume
+		? set_volume
+		? get_endbit
+		? set_endbit
+		? get_duration
+		? set_duration
+
+	Net::RTP::Profile
+		? get_name
+		? get_payload( index )
+		? get_payload_from_mime
+		? get_payload_from_rtpmap
+		? get_payload_number_from_mime
+		? get_payload_number_from_rtpmap
+		? find_payload_number
+		? find_payload
+	
+	$Net::RTP::Profile::AV
+		* instance of Net::RTP::Profile
+
+	Net::RTP::PayloadType
+		? get_media_type
+		? get_clock_rate
+		? get_bits_per_sample
+		? get_pattern_length
+		? get_normal_bitrate
+		? get_mime_type
+		? get_format_parameters
+	
+	
+		
+		
 
 AUTHOR
+------
 
 	Nicholas Humfrey, njh@ecs.soton.ac.uk
 
 
 COPYRIGHT AND LICENSE
+---------------------
 
-	Copyright (C) 2005 University of Southampton
+	Copyright (C) 2006 University of Southampton
 
 	This library is free software; you can redistribute it and/or modify it
 	under the same terms as Perl itself, either Perl version 5.005 or, at

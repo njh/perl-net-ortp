@@ -13,13 +13,20 @@
 #include "XSUB.h"
 
 #include <sys/types.h>
-#include <sys/socket.h>
-#include <net/if.h>
-#include <ifaddrs.h>
-
-#include <ortp.h>
+#include <ortp/ortp.h>
 
 
 MODULE = Net::RTP	PACKAGE = Net::RTP
+
+
+## Library initialisation
+void
+ortp_init()
+
+void
+ortp_scheduler_init()
+
+void
+ortp_exit()
 
 

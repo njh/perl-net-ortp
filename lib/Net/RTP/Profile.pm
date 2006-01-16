@@ -32,7 +32,7 @@ Nicholas Humfrey, njh@ecs.soton.ac.uk
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (C) 2005 University of Southampton
+Copyright (C) 2006 University of Southampton
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License

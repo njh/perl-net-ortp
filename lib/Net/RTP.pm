@@ -19,7 +19,7 @@ use vars qw/$VERSION $PORT/;
 $VERSION="0.01";
 
 # Number of Net::RTP objects created
-$OBJCOUNT=0;
+my $OBJCOUNT=0;
 
 
 XSLoader::load('Net::RTP', $VERSION);
@@ -32,8 +32,8 @@ sub new {
     
     # Initialise the ortp library?
     if ($OBJCOUNT==0) {
-    	# ortp_init()
-	# ortp_scheduler_init()
+    	ortp_init();
+		ortp_scheduler_init();
     }
     $OBJCOUNT++;
 
@@ -44,7 +44,7 @@ sub new {
 
 	# Store parameters
     my $self = {
-    	'mode'	=> $group,
+    	'mode'	=> $mode,
     	'session'	=> undef
     };
     
@@ -67,7 +67,7 @@ sub DESTROY {
     # Decrement the number of Net::RTP objects
     $OBJCOUNT--;
     if ($OBJCOUNT==0) {
-    	#ortp_exit();
+    	ortp_exit();
     } elsif ($OBJCOUNT<0) {
     	warn "Warning: Net::RTP object count is less than 0.";
     }

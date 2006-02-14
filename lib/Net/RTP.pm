@@ -12,8 +12,6 @@ use strict;
 use XSLoader;
 use Carp;
 
-use Net::RTP::Session;
-
 use vars qw/$VERSION $PORT/;
 
 $VERSION="0.01";
@@ -32,26 +30,179 @@ sub new {
     
     # Initialise the ortp library?
     if ($OBJCOUNT==0) {
-    	ortp_init();
-		ortp_scheduler_init();
+	   	ortp_initialize();
     }
     $OBJCOUNT++;
 
     
 	# Work out the multicast group to use
     croak "Missing mode parameter" unless defined $mode;
-
+    
+	# Convert mode name to mode enum
+    my $mnum = undef;
+    if    ($mode eq 'RECVONLY') { $mnum = 0; }
+    elsif ($mode eq 'SENDONLY') { $mnum = 1; }
+	elsif ($mode eq 'SENDRECV') { $mnum = 2; }
+	else {
+		croak "Invalid mode: $mode";
+	}
+	
+	# Create new session
+	my $session = rtp_session_new( $mnum );
+	unless (defined $session) { 
+		die "Failed to create RTP session";
+	}
 
 	# Store parameters
     my $self = {
     	'mode'	=> $mode,
-    	'session'	=> undef
+    	'session' => $session
     };
-    
-        
+
 
     bless $self, $class;
 	return $self;
+}
+
+
+sub set_scheduling_mode {
+    my $self=shift;
+	my ($yesno) = @_;
+
+	return rtp_session_set_scheduling_mode( $self->{'session'}, $yesno );
+}
+
+sub set_blocking_mode {
+    my $self=shift;
+	my ($yesno) = @_;
+
+	return rtp_session_set_blocking_mode( $self->{'session'}, $yesno );
+}
+
+sub set_local_addr {
+    my $self=shift;
+	my ($addr, $port) = @_;
+
+	return rtp_session_set_local_addr( $self->{'session'}, $addr, $port );
+}
+
+sub get_local_addr {
+    my $self=shift;
+	my ($addr, $port) = @_;
+
+	return rtp_session_get_local_port( $self->{'session'} );
+}
+
+sub set_remote_addr {
+    my $self=shift;
+	my ($addr, $port) = @_;
+
+	return rtp_session_set_remote_addr( $self->{'session'}, $addr, $port );
+}
+
+sub get_jitter_compensation {
+    my $self=shift;
+
+	return; #FIXME
+}
+
+sub set_jitter_compensation {
+    my $self=shift;
+	my ($milisec) = @_;
+	
+	return rtp_session_set_jitter_compensation( $self->{'session'}, $milisec );
+}
+
+sub get_adaptive_jitter_compensation {
+    my $self=shift;
+
+	return; #FIXME
+}
+
+sub set_adaptive_jitter_compensation {
+    my $self=shift;
+	my ($yesno) = @_;
+
+	return rtp_session_enable_adaptive_jitter_compensation( $self->{'session'}, $yesno );
+}
+
+sub set_local_ssrc {
+    my $self=shift;
+	my ($ssrc) = @_;
+	return rtp_session_set_ssrc( $self->{'session'}, $ssrc );
+}
+
+sub get_local_ssrc {
+    my $self=shift;
+
+	return; #FIXME
+}
+
+sub set_local_seq_number {
+    my $self=shift;
+	my ($seq) = @_;
+	return rtp_session_set_seq_number( $self->{'session'}, $seq );
+}
+
+sub get_local_seq_number {
+    my $self=shift;
+
+	return; #FIXME
+}
+
+sub set_local_payload_type {
+    my $self=shift;
+	my ($pt) = @_;
+	return rtp_session_set_send_payload_type( $self->{'session'}, $pt );
+}
+
+sub get_local_payload_type {
+    my $self=shift;
+	return rtp_session_get_send_payload_type( $self->{'session'} );
+}
+
+sub set_remote_payload_type {
+    my $self=shift;
+	my ($pt) = @_;
+	return rtp_session_set_recv_payload_type( $self->{'session'}, $pt );
+}
+
+sub get_remote_payload_type {
+    my $self=shift;
+	return rtp_session_get_recv_payload_type( $self->{'session'} );
+}
+
+sub get_remote_payload_type {
+    my $self=shift;
+	return rtp_session_get_recv_payload_type( $self->{'session'} );
+}
+
+sub recv_with_ts {
+    my $self=shift;
+	my ($ts) = @_;
+
+	return; #FIXME
+}
+
+sub send_with_ts {
+    my $self=shift;
+	my ($data, $ts) = @_;
+	return rtp_session_send_with_ts( $self->{'session'}, $data, $ts );
+}
+
+sub flush_sockets {
+    my $self=shift;
+	return rtp_session_flush_sockets( $self->{'session'} );
+}
+
+sub release_sockets {
+    my $self=shift;
+	return rtp_session_release_sockets( $self->{'session'} );
+}
+
+sub reset {
+    my $self=shift;
+	return rtp_session_reset( $self->{'session'} );
 }
 
 
@@ -60,18 +211,19 @@ sub DESTROY {
     my $self=shift;
     
     if (exists $self->{'session'}) {
-    	
+    	rtp_session_destroy( $self->{'session'} );
     	#rtp_session_reset 
     }
 
     # Decrement the number of Net::RTP objects
     $OBJCOUNT--;
     if ($OBJCOUNT==0) {
-    	ortp_exit();
+    	ortp_shutdown();
     } elsif ($OBJCOUNT<0) {
     	warn "Warning: Net::RTP object count is less than 0.";
     }
 }
+
 
 
 1;

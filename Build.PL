@@ -18,7 +18,7 @@ if ($pkgconfig =~ /not found/) {
 # Check for package
 my $pkg_version = `$pkgconfig --modversion $PKGNAME`;
 chomp($pkg_version);
-if ($pkg_version !~ /^\d+\.\d+\.\d+$/) {
+if ($pkg_version !~ /^[\d\.]+$/) {
 	print $pkg_version;
 	exit -1;
 } else {

@@ -1,4 +1,13 @@
 #!/usr/bin/perl
+#
+# Net::RTP example file
+#
+# Send a file containing PCMU audio 
+# to specified address and port
+#
+# File can be generated using:
+# sox input.aiff -t raw -b -U -c 1 -r 8000 output.raw
+#
 
 use Net::RTP;
 use strict;

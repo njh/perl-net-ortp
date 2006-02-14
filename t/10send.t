@@ -4,7 +4,7 @@ use Test;
 
 
 # use a BEGIN block so we print our plan before Net::RTP is loaded
-BEGIN { plan tests => 10 }
+BEGIN { plan tests => 14 }
 
 # load Net::RTP
 use Net::RTP;
@@ -31,15 +31,20 @@ ok( 1 );
 ok($rtp->set_remote_addr( '127.0.0.1', 5004 ) == 0);
 
 # Set the Payload Type 
-ok($rtp->set_local_payload_type( 0 ) == 0);
+ok($rtp->set_send_payload_type( 8 ) == 0);
+ok($rtp->get_send_payload_type( ) == 8);
 
 # Set the SSRC 
-ok($rtp->set_local_ssrc( 450851100 ) == 0);
+ok($rtp->set_send_ssrc( 450851100 ) == 0);
+ok($rtp->get_send_ssrc( ) == 450851100);
 
+# Set the initial sequence number
+ok($rtp->set_send_seq_number( 1287 ) == 0);
+ok($rtp->get_send_seq_number( ) == 1287);
 
 # Send a packet (full of NULLs)
-my $data = "\0" x 160;
-ok( $rtp->send_with_ts( $data, 160 ) == 172 );
+my $data = "\0" x 128;
+ok( $rtp->send_with_ts( $data, 128 ) == 140 );
 
 
 # Reset the session

@@ -12,8 +12,13 @@
 #include "perl.h"
 #include "XSUB.h"
 
+#include <stdio.h>
 #include <sys/types.h>
 #include <ortp/ortp.h>
+
+
+// The default size of the recieve buffer
+#define DEFAULT_BUF_SIZE	2048
 
 
 MODULE = Net::RTP	PACKAGE = Net::RTP
@@ -71,21 +76,55 @@ rtp_session_set_jitter_compensation(session,milisec)
 	RtpSession*	session
 	int			milisec
 
+int
+rtp_session_get_jitter_compensation(session)
+	RtpSession*	session
+  CODE:
+	RETVAL = session->rtp.jittctl.jitt_comp;
+  OUTPUT:
+	RETVAL
+	
+
 void
 rtp_session_enable_adaptive_jitter_compensation(session,val)
 	RtpSession*	session
 	int			val
 
 
+int
+rtp_session_get_adaptive_jitter_compensation(session)
+	RtpSession*	session
+  CODE:
+	RETVAL = session->rtp.jittctl.adaptive;
+  OUTPUT:
+	RETVAL
+
+	
 void
 rtp_session_set_ssrc(session,ssrc)
 	RtpSession*	session
 	int			ssrc
+	
+int
+rtp_session_get_send_ssrc(session)
+	RtpSession*	session
+  CODE:
+	RETVAL = session->send_ssrc;
+  OUTPUT:
+	RETVAL
 
 void
 rtp_session_set_seq_number(session,seq)
 	RtpSession*	session
 	int			seq
+
+int
+rtp_session_get_send_seq_number(session)
+	RtpSession*	session
+  CODE:
+	RETVAL = session->rtp.snd_seq;
+  OUTPUT:
+	RETVAL
 
 int
 rtp_session_set_send_payload_type(session,pt)
@@ -118,7 +157,43 @@ rtp_session_send_with_ts(session,sv,userts)
   	RETVAL = rtp_session_send_with_ts( session, ptr, len, userts );
   OUTPUT:
 	RETVAL
+
+
+SV*
+rtp_session_recv_with_ts(session,userts)
+	RtpSession*	session
+	int			userts
+  PREINIT:
+  	char* buffer = malloc( DEFAULT_BUF_SIZE );
+  	char* ptr = buffer;
+  	int buf_len = DEFAULT_BUF_SIZE;
+  	int buf_used=0, bytes=0;
+  	int have_more=1;
+  CODE:
+	while (have_more) {
+		bytes = rtp_session_recv_with_ts(session,ptr,buf_len-buf_used,userts,&have_more);
+		if (bytes<0) break;
+		buf_used += bytes;
+		
+		// Allocate some more memory
+		if (have_more) {
+			buffer = realloc( buffer, buf_len + DEFAULT_BUF_SIZE );
+			buf_len += DEFAULT_BUF_SIZE;
+			ptr += bytes;
+		}
+	}
+	
+	if (bytes < 0) {
+		RETVAL = NULL;
+  	} else {
+  		RETVAL = newSVpvn( buffer, buf_used );
+  	}
   	
+  	free( buffer );
+  OUTPUT:
+	RETVAL
+
+
 void
 rtp_session_flush_sockets(session)
 	RtpSession*	session

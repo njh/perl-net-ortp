@@ -33,6 +33,10 @@ DEPENDENCIES
 API OVERVIEW
 ------------
 
+	Methods marked with a dash will be included in version 0.1.
+	Methods marked with a question mark will be included in a later release.
+
+
 	Net::RTP
 		- new( mode )  (mode={RECVONLY,SENDONLY,SENDRECV})
 		- set_scheduling_mode( yesno )
@@ -46,16 +50,16 @@ API OVERVIEW
 		- set_jitter_compensation( milisec )
 		- set_adaptive_jitter_compensation( yesno )
 		- get_adaptive_jitter_compensation()
-		- set_local_ssrc( ssrc )
-		- get_local_ssrc( )
-		- set_local_seq_number( seq )
-		- get_local_seq_number( )
-		- set_local_payload_type( pt )
-		- get_local_payload_type( )
-		- set_remote_payload_type( pt )
-		- get_remote_payload_type( )
-		- get_local_ts( )
-		- get_remote_ts( )
+		- set_send_ssrc( ssrc )
+		- get_send_ssrc( )
+		- set_send_seq_number( seq )
+		- get_send_seq_number( )
+		- set_send_payload_type( pt )
+		- get_send_payload_type( )
+		- set_recv_payload_type( pt )
+		- get_recv_payload_type( )
+		- get_send_ts( )
+		- get_recv_ts( )
 
 		? signal_connect( signal, callback, userdata )
 		? signal_disconnect( signal, callback )
@@ -74,18 +78,18 @@ API OVERVIEW
 
 
 	Net::RTP::Packet
-		- set_payload( data )
-		- get_payload()
-		- set_markbit( value )
-		- get_markbit()
-		- set_seqnumber( seq )
-		- get_seqnumber()
-		- set_timestamp( ts )
-		- get_timestamp()
-		- set_ssrc( ssrc )
-		- get_ssrc()
-		- set_payload_type( pt )
-		- get_payload_type()
+		? set_payload( data )
+		? get_payload()
+		? set_markbit( value )
+		? get_markbit()
+		? set_seqnumber( seq )
+		? get_seqnumber()
+		? set_timestamp( ts )
+		? get_timestamp()
+		? set_ssrc( ssrc )
+		? get_ssrc()
+		? set_payload_type( pt )
+		? get_payload_type()
 
 
 	Net::RTP::TelephoneEvent

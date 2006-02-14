@@ -68,14 +68,12 @@ sub new {
 sub set_scheduling_mode {
     my $self=shift;
 	my ($yesno) = @_;
-
 	return rtp_session_set_scheduling_mode( $self->{'session'}, $yesno );
 }
 
 sub set_blocking_mode {
     my $self=shift;
 	my ($yesno) = @_;
-
 	return rtp_session_set_blocking_mode( $self->{'session'}, $yesno );
 }
 
@@ -89,105 +87,91 @@ sub set_local_addr {
 sub get_local_addr {
     my $self=shift;
 	my ($addr, $port) = @_;
-
 	return rtp_session_get_local_port( $self->{'session'} );
 }
 
 sub set_remote_addr {
     my $self=shift;
 	my ($addr, $port) = @_;
-
 	return rtp_session_set_remote_addr( $self->{'session'}, $addr, $port );
 }
 
 sub get_jitter_compensation {
     my $self=shift;
-
-	return; #FIXME
+	return rtp_session_get_jitter_compensation( $self->{'session'} );
 }
 
 sub set_jitter_compensation {
     my $self=shift;
 	my ($milisec) = @_;
-	
 	return rtp_session_set_jitter_compensation( $self->{'session'}, $milisec );
-}
-
-sub get_adaptive_jitter_compensation {
-    my $self=shift;
-
-	return; #FIXME
 }
 
 sub set_adaptive_jitter_compensation {
     my $self=shift;
 	my ($yesno) = @_;
-
 	return rtp_session_enable_adaptive_jitter_compensation( $self->{'session'}, $yesno );
 }
 
-sub set_local_ssrc {
+sub get_adaptive_jitter_compensation {
+    my $self=shift;
+	return rtp_session_get_jitter_compensation( $self->{'session'} );
+}
+
+sub set_send_ssrc {
     my $self=shift;
 	my ($ssrc) = @_;
 	return rtp_session_set_ssrc( $self->{'session'}, $ssrc );
 }
 
-sub get_local_ssrc {
+sub get_send_ssrc {
     my $self=shift;
-
-	return; #FIXME
+	return rtp_session_get_send_ssrc( $self->{'session'} );
 }
 
-sub set_local_seq_number {
+sub set_send_seq_number {
     my $self=shift;
 	my ($seq) = @_;
 	return rtp_session_set_seq_number( $self->{'session'}, $seq );
 }
 
-sub get_local_seq_number {
+sub get_send_seq_number {
     my $self=shift;
-
-	return; #FIXME
+	return rtp_session_get_send_seq_number( $self->{'session'} );
 }
 
-sub set_local_payload_type {
+sub set_send_payload_type {
     my $self=shift;
 	my ($pt) = @_;
 	return rtp_session_set_send_payload_type( $self->{'session'}, $pt );
 }
 
-sub get_local_payload_type {
+sub get_send_payload_type {
     my $self=shift;
 	return rtp_session_get_send_payload_type( $self->{'session'} );
 }
 
-sub set_remote_payload_type {
+sub set_recv_payload_type {
     my $self=shift;
 	my ($pt) = @_;
 	return rtp_session_set_recv_payload_type( $self->{'session'}, $pt );
 }
 
-sub get_remote_payload_type {
-    my $self=shift;
-	return rtp_session_get_recv_payload_type( $self->{'session'} );
-}
-
-sub get_remote_payload_type {
+sub get_recv_payload_type {
     my $self=shift;
 	return rtp_session_get_recv_payload_type( $self->{'session'} );
 }
 
 sub recv_with_ts {
     my $self=shift;
-	my ($ts) = @_;
-
-	return; #FIXME
+	my ($userts) = @_;
+	return rtp_session_recv_with_ts( $self->{'session'}, $userts ) ;
 }
 
 sub send_with_ts {
     my $self=shift;
-	my ($data, $ts) = @_;
-	return rtp_session_send_with_ts( $self->{'session'}, $data, $ts );
+	my ($data, $userts) = @_;
+	return rtp_session_send_with_ts( $self->{'session'}, $data, $userts );
 }
 
 sub flush_sockets {
@@ -212,7 +196,6 @@ sub DESTROY {
     
     if (exists $self->{'session'}) {
     	rtp_session_destroy( $self->{'session'} );
-    	#rtp_session_reset 
     }
 
     # Decrement the number of Net::RTP objects

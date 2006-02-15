@@ -17,10 +17,6 @@
 #include <ortp/ortp.h>
 
 
-// The default size of the recieve buffer
-#define DEFAULT_BUF_SIZE	2048
-
-
 MODULE = Net::RTP	PACKAGE = Net::RTP
 
 
@@ -160,13 +156,14 @@ rtp_session_send_with_ts(session,sv,userts)
 
 
 SV*
-rtp_session_recv_with_ts(session,userts)
+rtp_session_recv_with_ts(session,wanted,userts)
 	RtpSession*	session
+	int			wanted
 	int			userts
   PREINIT:
-  	char* buffer = malloc( DEFAULT_BUF_SIZE );
+  	char* buffer = malloc( wanted );
   	char* ptr = buffer;
-  	int buf_len = DEFAULT_BUF_SIZE;
+  	int buf_len = wanted;
   	int buf_used=0, bytes=0;
   	int have_more=1;
   CODE:
@@ -177,16 +174,19 @@ rtp_session_recv_with_ts(session,userts)
 		
 		// Allocate some more memory
 		if (have_more) {
-			buffer = realloc( buffer, buf_len + DEFAULT_BUF_SIZE );
-			buf_len += DEFAULT_BUF_SIZE;
+			buffer = realloc( buffer, buf_len + wanted );
+			buf_len += wanted;
 			ptr += bytes;
+			fprintf(stderr, "have_more!\n");
 		}
 	}
 	
-	if (bytes < 0) {
-		RETVAL = NULL;
+	
+	if (bytes > 0) {
+		RETVAL = newSVpvn( buffer, buf_used );
   	} else {
-  		RETVAL = newSVpvn( buffer, buf_used );
+  		fprintf(stderr, "bytes=%d\n", bytes);
+  		RETVAL = &PL_sv_undef;
   	}
   	
   	free( buffer );

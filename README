@@ -64,7 +64,7 @@ API OVERVIEW
 		? signal_connect( signal, callback, userdata )
 		? signal_disconnect( signal, callback )
 		
-		- recv_with_ts( ts )
+		- recv_with_ts( bytes, ts )
 		- send_with_ts( data, ts )
 		? create_packet( payload )
 		? recv_packet_with_ts( ts )

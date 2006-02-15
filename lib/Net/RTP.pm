@@ -164,8 +164,8 @@ sub get_recv_payload_type {
 
 sub recv_with_ts {
     my $self=shift;
-	my ($userts) = @_;
-	return rtp_session_recv_with_ts( $self->{'session'}, $userts ) ;
+	my ($bytes, $userts) = @_;
+	return rtp_session_recv_with_ts( $self->{'session'}, $bytes, $userts ) ;
 }
 
 sub send_with_ts {

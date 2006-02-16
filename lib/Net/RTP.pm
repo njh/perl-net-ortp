@@ -84,7 +84,7 @@ sub set_local_addr {
 	return rtp_session_set_local_addr( $self->{'session'}, $addr, $port );
 }
 
-sub get_local_addr {
+sub get_local_port {
     my $self=shift;
 	my ($addr, $port) = @_;
 	return rtp_session_get_local_port( $self->{'session'} );
@@ -115,7 +115,7 @@ sub set_adaptive_jitter_compensation {
 
 sub get_adaptive_jitter_compensation {
     my $self=shift;
-	return rtp_session_get_jitter_compensation( $self->{'session'} );
+	return rtp_session_adaptive_jitter_compensation_enabled( $self->{'session'} );
 }
 
 sub set_send_ssrc {

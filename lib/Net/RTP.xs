@@ -40,6 +40,12 @@ ortp_shutdown()
 RtpSession*
 rtp_session_new(mode)
 	int mode
+  CODE:
+  	RETVAL=rtp_session_new(mode);
+  	rtp_session_signal_connect(RETVAL,"ssrc_changed",(RtpCallback)rtp_session_reset,0);
+  OUTPUT:
+	RETVAL
+	
 	
 void
 rtp_session_set_scheduling_mode(session,yesno)
@@ -86,16 +92,15 @@ rtp_session_enable_adaptive_jitter_compensation(session,val)
 	RtpSession*	session
 	int			val
 
-
 int
-rtp_session_get_adaptive_jitter_compensation(session)
+rtp_session_adaptive_jitter_compensation_enabled(session)
 	RtpSession*	session
   CODE:
-	RETVAL = session->rtp.jittctl.adaptive;
+	RETVAL = rtp_session_adaptive_jitter_compensation_enabled( session );
   OUTPUT:
 	RETVAL
 
-	
+
 void
 rtp_session_set_ssrc(session,ssrc)
 	RtpSession*	session
@@ -169,7 +174,7 @@ rtp_session_recv_with_ts(session,wanted,userts)
   CODE:
 	while (have_more) {
 		bytes = rtp_session_recv_with_ts(session,ptr,buf_len-buf_used,userts,&have_more);
-		if (bytes<0) break;
+		if (bytes<=0) break;
 		buf_used += bytes;
 		
 		// Allocate some more memory
@@ -177,16 +182,13 @@ rtp_session_recv_with_ts(session,wanted,userts)
 			buffer = realloc( buffer, buf_len + wanted );
 			buf_len += wanted;
 			ptr += bytes;
-			fprintf(stderr, "have_more!\n");
 		}
 	}
 	
-	
-	if (bytes > 0) {
-		RETVAL = newSVpvn( buffer, buf_used );
+	if (bytes<=0) {
+ 		RETVAL = &PL_sv_undef;
   	} else {
-  		fprintf(stderr, "bytes=%d\n", bytes);
-  		RETVAL = &PL_sv_undef;
+		RETVAL = newSVpvn( buffer, buf_used );
   	}
   	
   	free( buffer );

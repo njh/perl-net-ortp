@@ -181,7 +181,7 @@ rtp_session_recv_with_ts(session,wanted,userts)
 		if (have_more) {
 			buffer = realloc( buffer, buf_len + wanted );
 			buf_len += wanted;
-			ptr += bytes;
+			ptr = buffer + buf_used;
 		}
 	}
 	

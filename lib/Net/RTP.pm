@@ -2,7 +2,9 @@ package Net::RTP;
 
 ################
 #
-# Net::RTP: Real-time Transport Protocol (rfc3550)
+# Net::RTP: Real-time Transport Protocol (RFC3550)
+#
+# Uses the oRTP library.
 #
 # Nicholas Humfrey
 # njh@ecs.soton.ac.uk
@@ -12,7 +14,7 @@ use strict;
 use XSLoader;
 use Carp;
 
-use vars qw/$VERSION $PORT/;
+use vars qw/$VERSION/;
 
 $VERSION="0.01";
 
@@ -217,7 +219,7 @@ __END__
 
 =head1 NAME
 
-Net::RTP - Real-time Transport Protocol (rfc3550)
+Net::RTP - Real-time Transport Protocol (RFC3550)
 
 =head1 SYNOPSIS
 

@@ -27,7 +27,8 @@ DEPENDENCIES
 	This module requires oRTP library on your system.
 	http://www.linphone.org/ortp/
 	
-	It requires version 0.8.1 or newer.
+	Version 0.9.x of oRTP is recommended (currently in CVS).
+
 
 
 API OVERVIEW

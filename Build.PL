@@ -43,6 +43,7 @@ my $build = Module::Build->new
 	requires => {
 		'Test' => '1.00',
 	},
+	create_makefile_pl => 'passthrough',
 	
 	extra_compiler_flags => $CFLAGS,
 	extra_linker_flags => $LDFLAGS,

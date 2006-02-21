@@ -53,7 +53,7 @@ while( 1 ) {
 	
 	my $offset = ($timestamp % scalar(@pcmu));
 	my $payload = pack('C*', @pcmu[$offset..($offset+$PACKET_SIZE-1)]);
-	print "\@pcmu[$offset..".($offset+$PACKET_SIZE-1)."]\n";
+	#print "\@pcmu[$offset..".($offset+$PACKET_SIZE-1)."]\n";
 	
 	my $sent = $rtp->send_with_ts( $payload, $timestamp );
 	if ($sent<=0) {

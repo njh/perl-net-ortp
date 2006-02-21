@@ -13,6 +13,9 @@ use Net::RTP;
 use strict;
 
 
+my $PACKET_SIZE = 160;		# 160 samples per packet
+
+
 # Unbuffered
 $|=1;
 
@@ -46,14 +49,14 @@ open(PCMU, $filename) or die "Failed to open input file: $!";
 
 my $data;
 my $user_ts = 0;
-while( my $read = read( PCMU, $data, 160 ) ) {
+while( my $read = read( PCMU, $data, $PACKET_SIZE ) ) {
 	#print "Read $read bytes.\n";
 	
 	my $sent = $rtp->send_with_ts( $data, $user_ts );
 	#print "Sent $sent bytes.\n";
 	
 	# Increment the timestamp
-	$user_ts+=160;
+	$user_ts+=$PACKET_SIZE;
 	
 	print ".";
 }

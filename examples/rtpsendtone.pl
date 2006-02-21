@@ -2,8 +2,7 @@
 #
 # Net::RTP example file
 #
-# Send a fixed tone containing PCMA audio 
-# to specified address and port
+# Send 800Hz beeps to specified address and port
 #
 #
 
@@ -11,20 +10,24 @@ use Net::RTP;
 use strict;
 
 
+my $PACKET_SIZE = 240;		# 240 samples per packet
+
+
+
 # Nice crunchy 800Hz tone in PCMU:
-my @pcmu_tone_ = (0x01, 0x0D, 0xFF, 0x8D, 0x81, 0x81, 0x8D, 0xFF, 0x0D, 0x01);
+my @pcmu_tone = (0x01, 0x0D, 0xFF, 0x8D, 0x81, 0x81, 0x8D, 0xFF, 0x0D, 0x01);
 my @pcmu_silence = (0x7F, 0x7F, 0x7F, 0x7F, 0x7F, 0x7F, 0x7F, 0x7F, 0x7F, 0x7F);
 
 # 0.5 second tone followed by 1.0 seconds of silence
 my @pcmu = ();
-for(0...400) { print push(@pcmu, @tone_pcmu); }
-for(0...800) { print pack(@pcmu, @silence_pcmu ); }
+for(1..400) { push(@pcmu, @pcmu_tone); }
+for(1..800) { push(@pcmu, @pcmu_silence ); }
 
 
 
 # Check the number of arguments
 if ($#ARGV != 1) {
-	print "usage: rtpsendtone.pl dest_addr dest_port\n";
+	print "usage: rtpsendbeeps.pl dest_addr dest_port\n";
 	exit;
 }
 
@@ -45,17 +48,20 @@ $rtp->set_remote_addr( $address, $port );
 $rtp->set_send_payload_type( 0 );
 
 
-my $user_ts = 0;
-my $ts_step = 120;
-while( my $read = read( PCMU, $data, 120 ) ) {
-	#print "Read $read bytes.\n";
+my $timestamp = 0;
+while( 1 ) {
 	
-	my $sent = $rtp->send_with_ts( pack('C*', $data), $user_ts );
-	#print "Sent $sent bytes.\n";
+	my $offset = ($timestamp % scalar(@pcmu));
+	my $payload = pack('C*', @pcmu[$offset..($offset+$PACKET_SIZE-1)]);
+	print "\@pcmu[$offset..".($offset+$PACKET_SIZE-1)."]\n";
+	
+	my $sent = $rtp->send_with_ts( $payload, $timestamp );
+	if ($sent<=0) {
+		warn "Failed to send packet";
+		last;
+	}
 	
 	# Increment the timestamp
-	$user_ts+=120;
-	
-	print ".";
+	$timestamp+=$PACKET_SIZE;
 }
 

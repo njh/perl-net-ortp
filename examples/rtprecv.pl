@@ -51,7 +51,7 @@ open(PCMU, ">$filename") or die "Failed to open output file: $!";
 my $data;
 my $user_ts = 0;
 while( 1 ) {
-	my $data = $rtp->recv_with_ts( 1024, $user_ts );
+	my $data = $rtp->recv_with_ts( 10, $user_ts );
 	if (defined $data) {
 		my $string = substr($data,0,32);
 		$string=~s/(.)/sprintf("%02X ",ord($1))/gse;

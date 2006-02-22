@@ -40,7 +40,6 @@ API OVERVIEW
 
 	Net::RTP
 		- new( mode )  (mode={RECVONLY,SENDONLY,SENDRECV})
-		- set_scheduling_mode( yesno )
 		- set_blocking_mode( yesno )
 		? set_profile( profile )
 		? get_profile( )
@@ -70,6 +69,9 @@ API OVERVIEW
 		? create_packet( payload )
 		? recv_packet_with_ts( ts )
 		? send_packet_with_ts( packet, ts )
+		? get_current_send_ts()
+		? get_current_recv_ts()
+
 
 		- flush_sockets()
 		- reset()

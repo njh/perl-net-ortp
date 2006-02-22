@@ -37,7 +37,6 @@ print "Remote Port: $port\n";
 my $rtp = new Net::RTP('SENDONLY');
 
 # Set it up
-$rtp->set_scheduling_mode( 1 );
 $rtp->set_blocking_mode( 1 );
 $rtp->set_remote_addr( $address, $port );
 $rtp->set_send_payload_type( 0 );

@@ -36,7 +36,6 @@ print "Remote Port: $port\n";
 my $rtp = new Net::RTP('RECVONLY');
 
 # Set it up
-$rtp->set_scheduling_mode( 1 );
 $rtp->set_blocking_mode( 1 );
 $rtp->set_local_addr( $address, $port );
 $rtp->set_jitter_compensation( 40 );

@@ -4,7 +4,7 @@ use Test;
 
 
 # use a BEGIN block so we print our plan before Net::RTP is loaded
-BEGIN { plan tests => 12 }
+BEGIN { plan tests => 11 }
 
 # load Net::RTP
 use Net::RTP;
@@ -17,10 +17,6 @@ ok(1);
 my $rtp = new Net::RTP('SENDONLY');
 ok( defined $rtp );
 
-
-# Enable scheduling mode
-$rtp->set_scheduling_mode( 1 );
-ok( 1 );
 
 # Enable blocking mode
 $rtp->set_blocking_mode( 1 );

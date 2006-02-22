@@ -67,16 +67,11 @@ sub new {
 }
 
 
-sub set_scheduling_mode {
-    my $self=shift;
-	my ($yesno) = @_;
-	return rtp_session_set_scheduling_mode( $self->{'session'}, $yesno );
-}
-
 sub set_blocking_mode {
     my $self=shift;
 	my ($yesno) = @_;
-	return rtp_session_set_blocking_mode( $self->{'session'}, $yesno );
+	rtp_session_set_scheduling_mode( $self->{'session'}, $yesno );
+	rtp_session_set_blocking_mode( $self->{'session'}, $yesno );
 }
 
 sub set_local_addr {
@@ -181,11 +176,6 @@ sub flush_sockets {
 	return rtp_session_flush_sockets( $self->{'session'} );
 }
 
-sub release_sockets {
-    my $self=shift;
-	return rtp_session_release_sockets( $self->{'session'} );
-}
-
 sub reset {
     my $self=shift;
 	return rtp_session_reset( $self->{'session'} );
@@ -225,15 +215,179 @@ Net::RTP - Real-time Transport Protocol (RFC3550)
 
   use Net::RTP;
 
-  my $rtp = Net::RTP->new( 'RECVONLY' );
-
-
+  my $rtp = Net::RTP->new( 'SENDONLY' );
+  $rtp->set_remote_addr( '237.70.58.86', 5004 );
+  $rtp->set_send_payload_type( 8 );
+  
+  while(1)
+  {
+     $payload = read_alaw_audio( 160 );
+     $rtp->send_with_ts( $payload, $timestamp);
+     $timestamp+=160;
+  }
 
 =head1 DESCRIPTION
 
-Net::RTP 
+Net::RTP is a perl interface to the oRTP library
+- a Real-time Transport Protocol stack.
 
 
+=over 4
+
+=item $rtp = new Net::RTP( $mode )
+
+The new() method is the constructor for the C<Net::RTP> class.
+
+The $mode parameter can be one of the following values:
+
+	RECVONLY
+	SENDONLY
+	SENDRECV
+	
+Which sets the RTP session to Receive Only Mode, Send Only Mode and 
+Send Receive modes respectively.
+
+
+=item $rtp->set_blocking_mode( $yesno )
+
+If $yesno is true, C<recv_with_ts()> will block until it is time for the 
+packet to be received, according to the timestamp passed to the function. 
+After this time, the function returns. For C<send_with_ts()>, it will block 
+until it is time for the packet to be sent. If $yesno is false, then the two 
+functions will return immediately.
+
+
+=item $rtp->set_local_addr( $address, $port )
+
+Specify the local addr to be use to listen for RTP packets or to send RTP 
+packet from. In case where the RTP session is send-only, then it is not 
+required to call this function: when calling C<set_remote_addr()>, 
+if no local address has been set, then the default INADRR_ANY (0.0.0.0) 
+IP address with a random port will be used. 
+Calling C<set_local_addr()> is mandatory when the session is 
+recv-only or duplex.
+
+
+=item $rtp->get_local_port()
+
+Returns the local port that the socket is bound to.
+
+
+=item $rtp->set_remote_addr( $address, $port )
+
+Sets the remote address of the RTP session, ie the destination address where 
+RTP packet are sent. If the session is recv-only or duplex, it also sets 
+the origin of incoming RTP packets. RTP packets that don't come from 
+addr:port are discarded.
+
+
+=item $rtp->get_jitter_compensation()
+
+Gets the time interval for which packet are buffered instead of 
+being delivered to the application.
+
+
+=item $rtp->set_jitter_compensation( $milisec )
+
+Sets the time interval for which packet are buffered instead of 
+being delivered to the application.
+
+
+=item $rtp->set_adaptive_jitter_compensation( $yesno )
+
+Enable or disable adaptive jitter compensation.
+
+
+=item $rtp->get_adaptive_jitter_compensation()
+
+Gets the current state of adaptive jitter compensation.
+
+
+=item $rtp->set_send_ssrc( $ssrc )
+
+Sets the SSRC for the outgoing stream. If not done, a random ssrc is used.
+
+
+=item $rtp->get_send_ssrc( $ssrc )
+
+Gets the SSRC for the outgoing stream.
+
+
+=item $rtp->set_send_seq_number( $seqnum )
+
+Sets the initial sequence number of a freshly created session.
+
+
+=item $rtp->get_send_seq_number( )
+
+Returns the current sequence number of a session.
+
+
+=item $rtp->set_send_payload_type( $payload_type )
+
+Sets the payload type for outgoing packets in the session.
+
+
+=item $rtp->get_send_payload_type( $payload_type )
+
+Gets the payload type for outgoing packets in the session.
+
+
+=item $rtp->set_recv_payload_type( $payload_type )
+
+Sets the expected payload type for incoming packets.
+
+
+=item $rtp->recv_with_ts( $bytes, $timestamp )
+
+Tries to read $bytes bytes from the incoming RTP stream related to timestamp 
+$timestamp. When blocking mode is on (see C<set_blocking_mode()> ), then the 
+calling thread is suspended until the timestamp given as argument expires, 
+whatever a received packet fits the query or not.
+
+Important note: it is clear that the application cannot know the timestamp 
+of the first packet of the incoming stream, because it can be random. 
+The time timestamp given to the function is used relatively to first 
+timestamp of the stream. In simple words, 0 is a good value to start 
+calling this function.
+
+
+=item $rtp->send_with_ts( $data, $timestamp )
+
+Send a RTP datagram to the destination set by C<set_remote_addr()> 
+containing $data with timestamp $timestamp. 
+Refer to RFC3550 to know what it is.
+
+
+=item $rtp->flush_sockets()
+
+Flushes the sockets for all pending incoming packets.
+This can be usefull if you did not listen to the stream for a while
+and wishes to start to receive again. During the time no receive is made
+packets get bufferised into the internal kernel socket structure.
+
+=item $rtp->reset()
+
+Reset the session: local and remote addresses are kept unchanged but the 
+internal queue for ordering and buffering packets is flushed, the session 
+is ready to be re-synchronised to another incoming stream.
+
+
+=back
+
+
+=head1 SEE ALSO
+
+L<http://www.ietf.org/rfc/rfc3550.txt>
+
+L<http://www.linphone.org/ortp/>
+
+=head1 BUGS
+
+Please report any bugs or feature requests to
+C<bug-net-rtp@rt.cpan.org>, or through the web interface at
+L<http://rt.cpan.org>.  I will be notified, and then you will automatically
+be notified of progress on your bug as I make changes.
 
 =head1 AUTHOR
 

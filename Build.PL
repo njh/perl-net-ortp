@@ -25,6 +25,16 @@ if ($pkg_version !~ /^[\d\.]+$/) {
 	print "Found $PKGNAME library version $pkg_version.\n";
 }
 
+# Check it is new enough
+my ($pkg_major, $pkg_minor, $pkg_micro) = split(/\./, $pkg_version);
+
+# FIXME: Better way of doing this?
+my $pkg_versnum = ($pkg_major*1000000)+($pkg_minor*1000)+$pkg_micro;
+if ($pkg_versnum < 8099) {
+	warn "Warning: Version of oRTP may not be new enough (version 0.8.99 or higher is recommended).\n";
+}
+
+
 # Get CFLAGS and LDFLAGS
 my $CFLAGS = `$pkgconfig --cflags $PKGNAME`;
 my $LDFLAGS = `$pkgconfig --libs $PKGNAME`;

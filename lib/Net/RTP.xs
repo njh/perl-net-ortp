@@ -17,6 +17,29 @@
 #include <ortp/ortp.h>
 
 
+
+#ifndef rtp_get_markbit
+#define rtp_get_markbit(mp)			((rtp_header_t*)((mp)->b_rptr))->markbit
+#endif
+
+#ifndef rtp_get_seqnumber
+#define rtp_get_seqnumber(mp)		((rtp_header_t*)((mp)->b_rptr))->seq_number
+#endif
+
+#ifndef rtp_get_timestamp
+#define rtp_get_timestamp(mp)		((rtp_header_t*)((mp)->b_rptr))->timestamp
+#endif
+
+#ifndef rtp_get_ssrc
+#define rtp_get_ssrc(mp)			((rtp_header_t*)((mp)->b_rptr))->ssrc
+#endif
+
+#ifndef rtp_get_payload_type
+#define rtp_get_payload_type(mp)	((rtp_header_t*)((mp)->b_rptr))->paytype
+#endif
+
+
+
 MODULE = Net::RTP	PACKAGE = Net::RTP
 
 
@@ -214,4 +237,86 @@ rtp_session_destroy(session)
 	RtpSession*	session
 
 
+
+void
+rtp_set_markbit(mp,value)
+	mblk_t* mp
+	int     value
+  CODE:
+    rtp_set_markbit( mp, value );
+
+
+void
+rtp_set_seqnumber(mp,value)
+	mblk_t* mp
+	int     value
+  CODE:
+    rtp_set_seqnumber( mp, value );
+
+
+void
+rtp_set_timestamp(mp,value)
+	mblk_t* mp
+	int     value
+  CODE:
+    rtp_set_timestamp( mp, value );
+
+
+void
+rtp_set_ssrc(mp,value)
+	mblk_t* mp
+	int     value
+  CODE:
+    rtp_set_ssrc( mp, value );
+
+
+void
+rtp_set_payload_type(mp,value)
+	mblk_t* mp
+	int     value
+  CODE:
+    rtp_set_payload_type( mp, value );
+
+
+
+int
+rtp_get_markbit(mp)
+	mblk_t* mp
+  CODE:
+	RETVAL = rtp_get_markbit(mp);
+  OUTPUT:
+	RETVAL
+
+int
+rtp_get_seqnumber(mp)
+	mblk_t* mp
+  CODE:
+	RETVAL = rtp_get_seqnumber(mp);
+  OUTPUT:
+	RETVAL
+
+
+int
+rtp_get_timestamp(mp)
+	mblk_t* mp
+  CODE:
+	RETVAL = rtp_get_timestamp(mp);
+  OUTPUT:
+	RETVAL
+
+int
+rtp_get_ssrc(mp)
+	mblk_t* mp
+  CODE:
+	RETVAL = rtp_get_ssrc(mp);
+  OUTPUT:
+	RETVAL
+
+int
+rtp_get_payload_type(mp)
+	mblk_t* mp
+  CODE:
+	RETVAL = rtp_get_payload_type(mp);
+  OUTPUT:
+	RETVAL
 

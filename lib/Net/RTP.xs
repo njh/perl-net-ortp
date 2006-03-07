@@ -238,6 +238,12 @@ rtp_session_destroy(session)
 
 
 
+mblk_t*
+rtp_session_recvm_with_ts(session,user_ts)
+	RtpSession*	session
+	int			user_ts
+
+
 void
 rtp_set_markbit(mp,value)
 	mblk_t* mp

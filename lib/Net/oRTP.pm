@@ -16,7 +16,7 @@ use Carp;
 
 use vars qw/$VERSION/;
 
-$VERSION="0.01";
+$VERSION="0.02";
 
 # Number of Net::oRTP objects created
 my $OBJCOUNT=0;

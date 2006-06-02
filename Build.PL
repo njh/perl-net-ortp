@@ -43,12 +43,12 @@ if ($pkg_versnum < 9001) {
 
 
 # Get CFLAGS
-my $CFLAGS = `$pkgconfig --cflags liblo`;
+my $CFLAGS = `$pkgconfig --cflags ortp`;
 chomp( $CFLAGS );
 print " CFLAGS = $CFLAGS\n";
 
 # Get LIBS
-my $LIBS = `$pkgconfig --libs liblo`;
+my $LIBS = `$pkgconfig --libs ortp`;
 chomp( $LIBS );
 print " LIBS = $LIBS\n";
 

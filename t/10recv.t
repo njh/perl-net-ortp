@@ -21,6 +21,9 @@ ok( defined $rtp );
 $rtp->set_local_addr( "0.0.0.0", 1286 );
 ok( $rtp->get_local_port() == 1286 );
 
+# Set the payload we are looking for
+$rtp->set_recv_payload_type( 8 );
+ok( $rtp->get_recv_payload_type() == 8);
 
 # Set Jitter compensation
 $rtp->set_jitter_compensation( 40 );
@@ -29,10 +32,6 @@ ok( $rtp->get_jitter_compensation() == 40);
 # Set adaptive Jitter compensation
 $rtp->set_adaptive_jitter_compensation( 1 );
 ok( $rtp->get_adaptive_jitter_compensation() == 1);
-
-# Set the payload we are looking for
-$rtp->set_recv_payload_type( 8 );
-ok( $rtp->get_recv_payload_type() == 8);
 
 
 # Flush the network sockets

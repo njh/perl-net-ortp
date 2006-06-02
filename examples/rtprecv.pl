@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 #
-# Net::RTP example file
+# Net::oRTP example file
 #
 # Send a file containing PCMU audio 
 # to specified address and port
@@ -9,7 +9,7 @@
 # sox -t raw -b -U -c 1 -r 8000 recording.raw output.aiff
 #
 
-use Net::RTP;
+use Net::oRTP;
 use strict;
 
 
@@ -33,7 +33,7 @@ print "Remote Port: $port\n";
 
 
 # Create a receive object
-my $rtp = new Net::RTP('RECVONLY');
+my $rtp = new Net::oRTP('RECVONLY');
 
 # Set it up
 $rtp->set_blocking_mode( 1 );

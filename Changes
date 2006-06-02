@@ -1,4 +1,9 @@
-Revision history for Perl extension Net::RTP.
+Revision history for Perl extension Net::oRTP.
+
+
+0.02  Fri Jun  2 03:52:46 BST 2006
+	Renamed from Net::RTP to Net::oRTP so
+	that I can make a pure perl module called Net::RTP
 
 0.01  Wed Feb 15 16:57:02 GMT 2006
 	First release

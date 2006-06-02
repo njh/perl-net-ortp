@@ -45,7 +45,7 @@ chomp( $CFLAGS, $LDFLAGS );
 # Create the Build script
 my $build = Module::Build->new
 (
-	module_name => 'Net::RTP',
+	module_name => 'Net::oRTP',
 	license => 'lgpl',
 	build_requires => {
 		'Module::Build' => '0.20'

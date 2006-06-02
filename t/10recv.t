@@ -3,18 +3,18 @@ use strict;
 use Test;
 
 
-# use a BEGIN block so we print our plan before Net::RTP is loaded
+# use a BEGIN block so we print our plan before Net::oRTP is loaded
 BEGIN { plan tests => 8 }
 
-# load Net::RTP
-use Net::RTP;
+# load Net::oRTP
+use Net::oRTP;
 
 # Module has loaded sucessfully 
 ok(1);
 
 
 # Create a send object
-my $rtp = new Net::RTP('RECVONLY');
+my $rtp = new Net::oRTP('RECVONLY');
 ok( defined $rtp );
 
 # Set the local port
@@ -45,7 +45,7 @@ ok(1);
 ## FIXME: send and recieve a packet here
 
 
-# Delete the Net::RTP object
+# Delete the Net::oRTP object
 undef $rtp;
 ok( 1 );
 

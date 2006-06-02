@@ -3,18 +3,18 @@ use strict;
 use Test;
 
 
-# use a BEGIN block so we print our plan before Net::RTP is loaded
+# use a BEGIN block so we print our plan before Net::oRTP is loaded
 BEGIN { plan tests => 11 }
 
-# load Net::RTP
-use Net::RTP;
+# load Net::oRTP
+use Net::oRTP;
 
 # Module has loaded sucessfully 
 ok(1);
 
 
 # Create a send object
-my $rtp = new Net::RTP('SENDONLY');
+my $rtp = new Net::oRTP('SENDONLY');
 ok( defined $rtp );
 
 
@@ -47,7 +47,7 @@ ok( $rtp->send_with_ts( $data, 128 ) == 140 );
 $rtp->reset();
 ok(1);
 
-# Delete the Net::RTP object
+# Delete the Net::oRTP object
 undef $rtp;
 ok( 1 );
 

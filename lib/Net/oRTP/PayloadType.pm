@@ -1,8 +1,8 @@
-package Net::RTP::Profile;
+package Net::oRTP::PayloadType;
 
 ################
 #
-# Net::RTP::Profile
+# Net::oRTP::PayloadType
 #
 # Nicholas Humfrey
 # njh@ecs.soton.ac.uk
@@ -23,7 +23,7 @@ __END__
 
 =head1 NAME
 
-Net::RTP::Profile
+Net::oRTP::PayloadType
 
 
 =head1 AUTHOR

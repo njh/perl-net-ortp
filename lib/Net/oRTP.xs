@@ -1,6 +1,6 @@
 /*
 
-	Net::RTP: Real-time Transport Protocol (rfc3550)
+	Net::oRTP: Real-time Transport Protocol (rfc3550)
 
 	Nicholas Humfrey
 	University of Southampton
@@ -40,7 +40,7 @@
 
 
 
-MODULE = Net::RTP	PACKAGE = Net::RTP
+MODULE = Net::oRTP	PACKAGE = Net::oRTP
 
 
 ## Library initialisation

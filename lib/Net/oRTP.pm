@@ -1,8 +1,8 @@
-package Net::RTP;
+package Net::oRTP;
 
 ################
 #
-# Net::RTP: Real-time Transport Protocol (RFC3550)
+# Net::oRTP: Real-time Transport Protocol (RFC3550)
 #
 # Uses the oRTP library.
 #
@@ -18,11 +18,11 @@ use vars qw/$VERSION/;
 
 $VERSION="0.01";
 
-# Number of Net::RTP objects created
+# Number of Net::oRTP objects created
 my $OBJCOUNT=0;
 
 
-XSLoader::load('Net::RTP', $VERSION);
+XSLoader::load('Net::oRTP', $VERSION);
 
 
 
@@ -190,12 +190,12 @@ sub DESTROY {
     	rtp_session_destroy( $self->{'session'} );
     }
 
-    # Decrement the number of Net::RTP objects
+    # Decrement the number of Net::oRTP objects
     $OBJCOUNT--;
     if ($OBJCOUNT==0) {
     	ortp_shutdown();
     } elsif ($OBJCOUNT<0) {
-    	warn "Warning: Net::RTP object count is less than 0.";
+    	warn "Warning: Net::oRTP object count is less than 0.";
     }
 }
 
@@ -209,13 +209,13 @@ __END__
 
 =head1 NAME
 
-Net::RTP - Real-time Transport Protocol (RFC3550)
+Net::oRTP - Real-time Transport Protocol (RFC3550)
 
 =head1 SYNOPSIS
 
-  use Net::RTP;
+  use Net::oRTP;
 
-  my $rtp = Net::RTP->new( 'SENDONLY' );
+  my $rtp = Net::oRTP->new( 'SENDONLY' );
   $rtp->set_remote_addr( '237.70.58.86', 5004 );
   $rtp->set_send_payload_type( 8 );
   
@@ -228,15 +228,15 @@ Net::RTP - Real-time Transport Protocol (RFC3550)
 
 =head1 DESCRIPTION
 
-Net::RTP is a perl interface to the oRTP library
+Net::oRTP is a perl interface to the oRTP library
 - a Real-time Transport Protocol stack.
 
 
 =over 4
 
-=item $rtp = new Net::RTP( $mode )
+=item $rtp = new Net::oRTP( $mode )
 
-The new() method is the constructor for the C<Net::RTP> class.
+The new() method is the constructor for the C<Net::oRTP> class.
 
 The $mode parameter can be one of the following values:
 
@@ -385,7 +385,7 @@ L<http://www.linphone.org/ortp/>
 =head1 BUGS
 
 Please report any bugs or feature requests to
-C<bug-net-rtp@rt.cpan.org>, or through the web interface at
+C<bug-net-ortp@rt.cpan.org>, or through the web interface at
 L<http://rt.cpan.org>.  I will be notified, and then you will automatically
 be notified of progress on your bug as I make changes.
 

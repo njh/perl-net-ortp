@@ -3,8 +3,8 @@ Changes
 examples/rtprecv.pl
 examples/rtpsend.pl
 examples/rtpsendbeeps.pl
-lib/Net/RTP.pm
-lib/Net/RTP.xs
+lib/Net/oRTP.pm
+lib/Net/oRTP.xs
 lib/Net/typemap
 README
 MANIFEST

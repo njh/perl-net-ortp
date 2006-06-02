@@ -1,5 +1,5 @@
-Net-RTP version 0.01
-====================
+Net-oRTP version 0.02
+=====================
 
 
 INSTALLATION
@@ -38,7 +38,7 @@ API OVERVIEW
 	Methods marked with a question mark will be included in a later release.
 
 
-	Net::RTP
+	Net::oRTP
 		- new( mode )  (mode={RECVONLY,SENDONLY,SENDRECV})
 		- set_blocking_mode( yesno )
 		? set_profile( profile )
@@ -80,7 +80,7 @@ API OVERVIEW
 		? send_bye()
 
 
-	Net::RTP::Packet
+	Net::oRTP::Packet
 		? set_payload( data )
 		? get_payload()
 		? set_markbit( value )
@@ -95,7 +95,7 @@ API OVERVIEW
 		? get_payload_type()
 
 
-	Net::RTP::TelephoneEvent
+	Net::oRTP::TelephoneEvent
 		? get_event
 		? set_event
 		? get_volume
@@ -105,7 +105,7 @@ API OVERVIEW
 		? get_duration
 		? set_duration
 
-	Net::RTP::Profile
+	Net::oRTP::Profile
 		? get_name
 		? get_payload( index )
 		? get_payload_from_mime
@@ -115,10 +115,10 @@ API OVERVIEW
 		? find_payload_number
 		? find_payload
 	
-	$Net::RTP::Profile::AV
-		* instance of Net::RTP::Profile
+	$Net::oRTP::Profile::AV
+		* instance of Net::oRTP::Profile
 
-	Net::RTP::PayloadType
+	Net::oRTP::PayloadType
 		? get_media_type
 		? get_clock_rate
 		? get_bits_per_sample

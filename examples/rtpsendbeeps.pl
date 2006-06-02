@@ -1,12 +1,12 @@
 #!/usr/bin/perl
 #
-# Net::RTP example file
+# Net::oRTP example file
 #
 # Send 800Hz beeps to specified address and port
 #
 #
 
-use Net::RTP;
+use Net::oRTP;
 use strict;
 
 
@@ -39,7 +39,7 @@ print "Remote Port: $port\n";
 
 
 # Create a send object
-my $rtp = new Net::RTP('SENDONLY');
+my $rtp = new Net::oRTP('SENDONLY');
 
 # Set it up
 $rtp->set_blocking_mode( 1 );

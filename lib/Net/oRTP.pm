@@ -2,7 +2,7 @@ package Net::oRTP;
 
 ################
 #
-# Net::oRTP: Real-time Transport Protocol (RFC3550)
+# Net::oRTP: Perl interface to the oRTP C library
 #
 # Uses the oRTP library.
 #
@@ -209,7 +209,7 @@ __END__
 
 =head1 NAME
 
-Net::oRTP - Real-time Transport Protocol (RFC3550)
+Net::oRTP - Perl interface to the oRTP C library
 
 =head1 SYNOPSIS
 
@@ -228,8 +228,8 @@ Net::oRTP - Real-time Transport Protocol (RFC3550)
 
 =head1 DESCRIPTION
 
-Net::oRTP is a perl interface to the oRTP library
-- a Real-time Transport Protocol stack.
+Net::oRTP is a perl interface to the oRTP C library
+- a RTP (Real-time Transport Protocol) stack.
 
 
 =over 4

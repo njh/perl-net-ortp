@@ -1,5 +1,6 @@
 Build.PL
 Changes
+COPYING
 examples/rtprecv.pl
 examples/rtpsend.pl
 examples/rtpsendbeeps.pl

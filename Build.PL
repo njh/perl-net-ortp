@@ -11,15 +11,22 @@ my $PKGNAME = 'ortp';
 # Check for pkg-config
 my $pkgconfig = `which pkg-config`;
 chomp($pkgconfig);
-if ($pkgconfig =~ /not found/) {
-	die "Error: pkgconfig is not available on your system";
+if ($pkgconfig !~ /pkg-config/ or 
+    $pkgconfig =~ /not found/i)
+{
+	die "Error: pkgconfig is not available on your system\n".
+	    "It is available from http://pkgconfig.freedesktop.org/\n";
+} else {
+	my $pkgconfig_version = `$pkgconfig --version`;
+	chomp( $pkgconfig_version );
+	print "Found pkg-config version $pkgconfig_version.\n";
 }
 
 # Check for package
 my $pkg_version = `$pkgconfig --modversion $PKGNAME`;
 chomp($pkg_version);
 if ($pkg_version !~ /^[\d\.]+$/) {
-	print $pkg_version;
+	print STDERR $pkg_version;
 	exit -1;
 } else {
 	print "Found $PKGNAME library version $pkg_version.\n";
@@ -30,16 +37,20 @@ my ($pkg_major, $pkg_minor, $pkg_micro) = split(/\./, $pkg_version);
 
 # FIXME: Better way of doing this?
 my $pkg_versnum = ($pkg_major*1000000)+($pkg_minor*1000)+$pkg_micro;
-if ($pkg_versnum < 8099) {
-	warn "Warning: Version of oRTP may not be new enough (version 0.8.99 or higher is recommended).\n";
+if ($pkg_versnum < 9001) {
+	warn "Warning: Version of oRTP may not be new enough (version 0.9.1 or higher is recommended).\n";
 }
 
 
-# Get CFLAGS and LDFLAGS
-my $CFLAGS = `$pkgconfig --cflags $PKGNAME`;
-my $LDFLAGS = `$pkgconfig --libs $PKGNAME`;
-chomp( $CFLAGS, $LDFLAGS );
+# Get CFLAGS
+my $CFLAGS = `$pkgconfig --cflags liblo`;
+chomp( $CFLAGS );
+print " CFLAGS = $CFLAGS\n";
 
+# Get LIBS
+my $LIBS = `$pkgconfig --libs liblo`;
+chomp( $LIBS );
+print " LIBS = $LIBS\n";
 
 
 # Create the Build script
@@ -56,7 +67,7 @@ my $build = Module::Build->new
 	create_makefile_pl => 'passthrough',
 	
 	extra_compiler_flags => $CFLAGS,
-	extra_linker_flags => $LDFLAGS,
+	extra_linker_flags => $LIBS,
 );
 
 $build->create_build_script;

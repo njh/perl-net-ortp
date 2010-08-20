@@ -2,9 +2,9 @@
 
 	Net::oRTP: Real-time Transport Protocol (rfc3550)
 
-	Nicholas Humfrey
+	Nicholas J Humfrey
 	University of Southampton
-	njh@ecs.soton.ac.uk
+	njh@aelius.com
 	
 */
 

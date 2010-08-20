@@ -4,8 +4,8 @@ package Net::oRTP::PayloadType;
 #
 # Net::oRTP::PayloadType
 #
-# Nicholas Humfrey
-# njh@ecs.soton.ac.uk
+# Nicholas J Humfrey
+# njh@cpan.org
 #
 
 use strict;
@@ -28,7 +28,7 @@ Net::oRTP::PayloadType
 
 =head1 AUTHOR
 
-Nicholas Humfrey, njh@ecs.soton.ac.uk
+Nicholas J Humfrey, njh@cpan.org
 
 =head1 COPYRIGHT AND LICENSE
 
